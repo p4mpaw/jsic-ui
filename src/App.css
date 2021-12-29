@@ -1,0 +1,45 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(1px + 2vmin);
+  color: white;
+}
+
+.app-url {
+  color: #61dafb;
+}
+
+.cta-button {
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  min-width: 110px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.connect-wallet-button {
+  background: rgb(2, 52, 102);
+}
+
+.mint-nft-button {
+  background: rgb(122, 192, 137);
+}
+
+.extraInfo {
+  font-size: 11px;
+}
+
+.greenText {
+  font-size: 12px;
+  color: green;
+}
