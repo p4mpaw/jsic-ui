@@ -3,7 +3,7 @@ import logo from './jsic.png';
 import contract from './abi.json';
 import mainConfig from './config.json';
 import { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 
 const contractAddress = mainConfig.CONTRACT_ADDRESS;
 const abi = contract;
@@ -15,9 +15,15 @@ function App() {
   const [mintCost, setMintCost] = useState(null);
   const [maxSupply, setMaxSupply] = useState(null);
   const [currSupply, setCurrSupply] = useState(null);
+  const [walletUp, setWalletUp] = useState(null);
+  const [mintAmount, setMintAmount] = useState(1);
+
 
   const checkWalletIsConnected = async () => {
     const { ethereum } = window;
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const netInfo = await provider.getNetwork()
+    console.log(netInfo.chainId)
 
     if (!ethereum) {
       console.log("Make sure you have Metamask installed!");
@@ -25,6 +31,13 @@ function App() {
       return;
     } else {
       console.log("Wallet exists! We're ready to go!")
+    }
+
+    if (netInfo.chainId !== 4) {
+      alert('Switch network to Rinkeby in the wallet to continue!')
+      return;
+    } else {
+      setWalletUp(true)
     }
 
     const accounts = await ethereum.request({ method: 'eth_accounts' });
@@ -41,9 +54,9 @@ function App() {
 
   const connectWalletHandler = async () => {
     const { ethereum } = window;
-
+    
     if (!ethereum) {
-      alert("Please install Metamask!");
+      alert('Please install Metamask!');
     }
 
     try {
@@ -65,10 +78,10 @@ function App() {
         let symbol = await nftContract.symbol();
         let maxSupply = await nftContract.maxSupply();
         let totalSupply = await nftContract.totalSupply();
-        console.log(symbol);
-        console.log(ethers.utils.formatEther(cost), "eth");
-        console.log(maxSupply.toString());
-        console.log(totalSupply.toString());
+        //console.log(symbol);
+        //console.log(ethers.utils.formatEther(cost), "eth");
+        //console.log(maxSupply.toString());
+        //console.log(totalSupply.toString());
         setMaxSupply(maxSupply.toString());
         setMintCost(ethers.utils.formatEther(cost));
         setCurrSupply(totalSupply.toString());
@@ -88,11 +101,12 @@ function App() {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const nftContract = new ethers.Contract(contractAddress, abi, signer);
-        const nftPrice = mainConfig.WEI_COST;
+        let nftPrice = await nftContract.cost();
+        let cost = BigNumber.from(nftPrice.toString())
 
-        console.log("Initialize payment");
+        console.log("Initialize payment, cost is", nftPrice.toString(), "mint amount is:", mintAmount.toString());
         setMintState("Inititialize...");
-        let nftTxn = await nftContract.mint(1, { value: nftPrice });
+        let nftTxn = await nftContract.mint(mintAmount, { value: cost.mul(mintAmount) });
 
         console.log("Minting... please wait");
         setMintState("Mint in progress...");
@@ -107,21 +121,40 @@ function App() {
       }
 
     } catch (err) {
+      setMintState("An error occured, refresh the page");
       console.log(err);
     }
   }
 
   const connectWalletButton = () => {
-    return (
-      <button onClick={connectWalletHandler} className='cta-button connect-wallet-button'>
-        Connect Wallet
-      </button>
-    )
+    if (walletUp) {
+      return (
+        <button onClick={connectWalletHandler} className='cta-button connect-wallet-button'>
+          Connect Wallet
+        </button>
+      )
+    } else {
+      return (
+        <p className='redText'>Wallet must be connected to the Rinkeby test net. Connect and referesh the page.</p>
+      )
+    }
   }
 
   useEffect(() => {
     checkWalletIsConnected();
   }, [])
+
+  let incrementMintCount = () => {
+    if (mintAmount < 5) {
+      setMintAmount(mintAmount + 1);
+    }
+  };
+
+  let decrementMintCount = () => {
+    if (mintAmount > 1) {
+      setMintAmount(mintAmount - 1);
+    }
+  };
 
   const mintNft = () => {
     console.log(mintState);
@@ -131,6 +164,8 @@ function App() {
         <>
           <p className='extraInfo'>
             Mint cost: { mintCost } eth, current supply: { currSupply } / { maxSupply } <br/>
+          </p>
+          <p>Amount to mint: <button onClick={decrementMintCount}>-</button> { mintAmount } <button onClick={incrementMintCount}>+</button>
           </p>
           <button onClick={mintNftHandler} className='cta-button mint-nft-button'>
             Mint NFT
@@ -196,6 +231,7 @@ function App() {
           Chain Link Rinkeby Faucet
         </a>
       </p>
+      <p>Once Mint button is pressed wait the page to be updated with transaction details.</p>
   </div>
   );
 }

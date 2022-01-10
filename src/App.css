@@ -43,3 +43,8 @@
   font-size: 12px;
   color: green;
 }
+
+.redText {
+  font-size: 14px;
+  color: rgb(126, 6, 66);
+}
