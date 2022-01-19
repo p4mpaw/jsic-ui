@@ -145,7 +145,7 @@ function App() {
   }, [])
 
   let incrementMintCount = () => {
-    if (mintAmount < 5) {
+    if (mintAmount < 100) {
       setMintAmount(mintAmount + 1);
     }
   };

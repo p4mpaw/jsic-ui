@@ -1,19 +1,12 @@
 {
-    "CONTRACT_ADDRESS": "0xECABB3A0A53f0f020000214965CdF814Dee07328",
-    "SCAN_LINK": "https://rinkeby.etherscan.io/address/0xecabb3a0a53f0f020000214965cdf814dee07328",
+    "CONTRACT_ADDRESS": "0xa78d08A82988c71AdAaA14671cEf9f7AB2ba8B8B",
+    "SCAN_LINK": "https://rinkeby.etherscan.io/address/0xa78d08A82988c71AdAaA14671cEf9f7AB2ba8B8B",
     "SCAN_MAIN_URL" : "https://rinkeby.etherscan.io",
     "NETWORK": {
       "NAME": "Rinkeby",
       "SYMBOL": "ETH",
       "ID": 4
     },
-    "NFT_NAME": "Jaded Souls Intellectual Club",
-    "SYMBOL": "JSIC",
-    "MAX_SUPPLY": 2022,
-    "WEI_COST": 2022000000000000,
-    "DISPLAY_COST": 0.002022,
-    "GAS_LIMIT": 285000,
-    "MARKETPLACE": "Opeansea",
-    "MARKETPLACE_LINK": "https://testnets.opensea.io/collection/jadedsoulsintellectualclub",
+    "MARKETPLACE_LINK": "https://testnets.opensea.io/collection/NewPHUNKSTEST",
     "MARKETPLACE_PROFILE": "https://testnets.opensea.io/account"
-  }
+}
