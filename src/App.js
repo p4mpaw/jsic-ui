@@ -199,7 +199,7 @@ function App() {
 
   return (
     <div className="App">
-      <h3>Jaded Souls Intellectual Club NFT</h3>
+      <h3>NewPHUNKS TEST</h3>
       <img src={ logo } alt="logo"></img>
       <br/>
       Contract addr on { mainConfig.NETWORK.NAME }: <a 
